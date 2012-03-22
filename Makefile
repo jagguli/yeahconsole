@@ -8,7 +8,7 @@ PREFIX = /usr/local
 LIBS = -lX11 
 INCLUDES = -I/usr/X11R6/include 
 LIB_DIRS = -L/usr/X11R6/lib
-FLAGS = -Os -Wall
+FLAGS = -O2 -Wall
 
 OBJECTS := yeahconsole.o
 SOURCES := yeahconsole.c
