@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
                             XMoveWindow(dpy, win, opt_x, -height - opt_bw);
                             hidden = 1;
                         }else{
-                            XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, CurrentTime); 
+                            XSetInputFocus(dpy, termwin, RevertToPointerRoot, CurrentTime); 
                         }
                         XSync(dpy, False);
                     } else {
