@@ -134,15 +134,16 @@ int main(int argc, char *argv[])
 	    if (key == opt_key) {
 		if (!hidden) {
 		    XGetInputFocus(dpy, &current_focused, &revert_to);
-		    if (last_focused && current_focused == termwin)
-			XSetInputFocus(dpy, last_focused,
+		    if (last_focused && current_focused == termwin){
+			    XSetInputFocus(dpy, last_focused,
 				       RevertToPointerRoot, CurrentTime);
-		    /* else
-		       XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, CurrentTime); */
-		    if (opt_step && !fullscreen)
-			roll(UP);
-		    XMoveWindow(dpy, win, opt_x, -height - opt_bw);
-		    hidden = 1;
+		        if (opt_step && !fullscreen)
+			        roll(UP);
+		        XMoveWindow(dpy, win, opt_x, -height - opt_bw);
+		        hidden = 1;
+		    }else{
+		       XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, CurrentTime); 
+            }
 		    XSync(dpy, False);
 		} else {
 		    XRaiseWindow(dpy, win);
