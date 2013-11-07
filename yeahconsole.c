@@ -283,9 +283,8 @@ void get_defaults()
     opt = XGetDefault(dpy, progname, "term");
     opt_term = opt ? opt : "xterm";
     opt = XGetDefault(dpy, progname, "toggleKey");
-    opt_key =
-        opt ? grab_that_key(opt, numlockmask) : grab_that_key(def_key,
-                numlockmask);
+    opt_key = opt ? grab_that_key(opt, numlockmask) : grab_that_key(def_key,
+          numlockmask);
     opt = XGetDefault(dpy, progname, "keySmaller");
     opt_key_smaller =
         opt ? grab_that_key(opt,
@@ -306,6 +305,7 @@ KeyShortCut grab_that_key(char *opt, unsigned int numlockmask)
 {
     unsigned int modmask = 0;
     KeySym keysym;
+    fprintf(stderr,"key%s \n", opt);
 
     if (strstr(opt, "Control"))
         modmask = ControlMask;
@@ -319,10 +319,12 @@ KeyShortCut grab_that_key(char *opt, unsigned int numlockmask)
     opt = strrchr(opt, '+');
     keysym = XStringToKeysym(++opt);
 
-    XGrabKey(dpy, XKeysymToKeycode(dpy, keysym), modmask, root, True,
+    int x = XGrabKey(dpy, XKeysymToKeycode(dpy, keysym), modmask, root, True,
             GrabModeAsync, GrabModeAsync);
-    XGrabKey(dpy, XKeysymToKeycode(dpy, keysym), LockMask | modmask, root,
+    fprintf(stderr,"Commandd%d \n", x);
+    x = XGrabKey(dpy, XKeysymToKeycode(dpy, keysym), LockMask | modmask, root,
             True, GrabModeAsync, GrabModeAsync);
+    fprintf(stderr,"Commandd%d \n", x);
     if (numlockmask) {
         XGrabKey(dpy, XKeysymToKeycode(dpy, keysym), numlockmask | modmask,
                 root, True, GrabModeAsync, GrabModeAsync);
@@ -402,15 +404,14 @@ void init_command(int argc, char *argv[])
         pos +=
             sprintf(pos, "%s -b 0 -embed %d -name %s ", opt_term, (int) win,
                     progname);
-    else
+    else if(strstr(opt_term, "st"))
         pos +=
-            sprintf(pos, "%s -b 0 -into %d -name %s ", opt_term, (int) win,
+            sprintf(pos, "%s -w %d -t %s ", opt_term, (int) win,
                     progname);
     for (i = 1; i < argc; i++) {
         pos += sprintf(pos, "%s ", argv[i]);
 
     }
-    //fprintf(stderr,"Command:%s \n",pos);
     sprintf(pos, "&");
 }
 
